@@ -1,0 +1,22 @@
+version: '3.8'
+
+services:
+  fasterapi: 
+    image: fastapi
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - 8000:8000
+
+  streamlitter:
+    image: streamlit:v1
+    build:
+      context: ./streamlit_app
+      dockerfile: Dockerfile
+    ports:
+      - 8501:8501
+    depends_on:
+      - fasterapi
+    environment:
+      API_URL: http://fasterapi:8000
