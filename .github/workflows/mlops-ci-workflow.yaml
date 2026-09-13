@@ -72,6 +72,6 @@ jobs:
         with:
           context: "."
           push: true
-          tags: sachinsurana/fasterapi:{{ github.sha }}  
+          tags: sachinsurana/fasterapi:${{ github.sha }}
           file: "Dockerfile"
     
