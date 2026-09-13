@@ -11,10 +11,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         
       - name: Set up Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v6
         with:
           python-version: '3.11.9'
 
@@ -25,12 +25,21 @@ jobs:
 
       - name: Data Preprocessing
         run: |
-          python src/data/run_processing.py
+          python src/data/run_processing.py \
+          --input data/raw/house_data.csv \
+          --output data/processed/cleaned_house_data.csv
 
       - name: Do Feature Engineering
         run: |
-          python src/features/engineer.py --input data/processed/cleaned_house_data.csv --output data/processed/featured_house_data.csv --preprocessor models/trained/preprocessor.pkl
+          python src/features/engineer.py \
+          --input data/processed/cleaned_house_data.csv \
+          --output data/processed/featured_house_data.csv \
+          --preprocessor models/trained/preprocessor.pkl
 
       - name: Train Model
         run: |
-          python src/models/train_model.py --config configs/model_config.yaml --data data/processed/featured_house_data.csv --models-dir models --mlflow-tracking-uri http://localhost:5555
+          python src/models/train_model.py \
+          --config configs/model_config.yaml \
+          --data data/processed/featured_house_data.csv \
+          --models-dir models \
+          --mlflow-tracking-uri http://localhost:5555
